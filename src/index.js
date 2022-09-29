@@ -2,8 +2,8 @@ import { initializeApp} from 'firebase/app'
 import {
     getFirestore, collection,
     doc, onSnapshot,
-    query, increment,
-    getDoc, updateDoc
+    query, where,
+    getDoc, addDoc, serverTimestamp
 } from 'firebase/firestore'
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -25,18 +25,23 @@ const db = getFirestore()
 //collection ref
 const colRef = collection(db, 'cry')
 
+let now = new Date();
+let today = new Date( now.getFullYear(), now.getMonth(), now.getDate(), 0,0,0,0)
+console.log(now)
+console.log(today)
+
 //queries
-const q = query(colRef)
+const q = query(colRef, where('today', '>', today) )
+
 
 // real time collection data
-  onSnapshot(q, (snapshot) => { // vagy colRef
+onSnapshot(q, (snapshot) => { // vagy colRef
     let cry = []
     snapshot.docs.forEach((doc) => {
         cry.push({ ...doc.data(), id: doc.id })
     })
-    console.log(cry)
+    console.log(cry.length)
   })
-
 
 // get single document
 const docRef = doc(db, 'cry', 'master')
@@ -48,49 +53,19 @@ onSnapshot(docRef, (doc) => {
 // updating a document
 const updateForm = document.querySelector('.add')
 
-let sumchange = true
-let nowchange = true
-function changesum() {
-  if(sumchange == true) {
-    sumchange = false
-    return 1;
-  } else if ( sumchange == false) {
-    sumchange = true;
-    return 0;
-  } 
-}
-function changenow() {
-  if(nowchange == true) {
-    nowchange = false
-    document.getElementById("changetext").innerHTML = "I calmed down"
-    document.getElementById("stat").style.display = "block";
-    movedown()
-    return 1;
-  } else if ( nowchange == false) {
-    nowchange = true;
-    document.getElementById("changetext").innerHTML = "I'm feeling stressed"
-    document.getElementById("stat").style.display = "none";
-    document.getElementById("weglad").style.display = "block"
-    setTimeout(() => {
-      document.getElementById("weglad").style.display = "none"
-     }, 2000);
-     moveup()
-    return -1;
-  } 
-}
 
 updateForm.addEventListener('submit', (e) => {
   e.preventDefault()
 
-  let docRef = doc(db, 'cry', 'master')
 
-  updateDoc(docRef, {
-    now: increment(changenow()),
-    sum: increment(changesum())
-  })
-  .then(() => {
+  addDoc(colRef, {
+    today: serverTimestamp(),
+    now : valami.length
+
+})
+.then(() => {
     updateForm.reset()
-  })
+})
 })
 
 
@@ -111,3 +86,4 @@ function moveup() {
 function movedown() {
   document.getElementById("changetext").style.bottom = "0%";
 }
+
