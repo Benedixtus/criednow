@@ -83,38 +83,23 @@ updateForm.addEventListener('submit', (e) => {
 
 })
 .then(() => {
-  const stat = document.getElementById("stat"
-  )
-  if( stat.style.display == "none") {
-      stat.style.display = "block"
-  } else { stat.style.display = "none"}
-
     updateForm.reset()
 })
 })
 
-let fel = 0
 
 function refreshAll(ltoday, lsum) {
   let text;
   
   text = "Altogether we felt like this " + (ltoday + lsum) + " times."  
   document.getElementById('all').innerHTML = text;
-  if( fel == 0) {
-    fel = 50
-  document.getElementById("changetext").innerHTML = "I'm feeling stressed"
-    console.log( fel)
-  } else {fel = 0
-  document.getElementById("changetext").innerHTML = "I'm better now"
-  }
-  document.getElementById("changetext").style.bottom = (fel+ "%");
 
 }
 
 function refreshToday(today) {
   let text = "It's okay";
     if( today != 0) {
-      text += ", you are not alone!<br> " + today + "   people also feel  a little bit under the weather now.\n" 
+      text += ", you are not alone!<br> " + (parseInt(today)+ 1)+ "   people also feel  a little bit under the weather now.\n" 
     } else { text += "!\n"}
   document.getElementById('today').innerHTML = text;
 }
@@ -131,8 +116,3 @@ function maketoday(a) {
 }
 let lsum;
 let ltoday;
-
-const stut = document.getElementById("stat")
-  if( stut.style.display == "none") {
-      stut.style.display = "block"
-  } else { stut.style.display = "none"}

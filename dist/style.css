@@ -22,7 +22,6 @@ html {
     bottom: 50%;
     left: 50%;
     transform: translateX(-50%) translateY(50%);
-    transition: 3s;
 }
 #stat {
     display: block;
@@ -30,7 +29,4 @@ html {
     color: white;
     margin: 10% 20%;
     font-size: 80%
-}
-#weglad {
-    display: none;
 }
